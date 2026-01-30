@@ -7,4 +7,5 @@ brew "zoxide"
 brew "git-delta"
 brew "jq"
 brew "direnv"
+brew "gh"
 
