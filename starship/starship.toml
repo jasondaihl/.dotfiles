@@ -1,0 +1,22 @@
+add_newline = false
+
+[character]
+success_symbol = "➜"
+error_symbol = "✗"
+
+[git_branch]
+symbol = " "
+
+[git_status]
+use_git_executable = true
+
+[nodejs]
+format = "via  $version "
+detect_extensions = ["js", "ts", "tsx", "jsx", "mjs", "cjs"]
+detect_files = ["package.json", ".node-version"]
+
+[package]
+disabled = true
+
+[time]
+disabled = true
