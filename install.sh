@@ -14,8 +14,6 @@ ln -sf "$DOTFILES/git/gitconfig" ~/.gitconfig
 ln -sf "$DOTFILES/starship/starship.toml" ~/.config/starship.toml
 
 if ! grep -q ".dotfiles/zsh/zshrc" ~/.zshrc 2>/dev/null; then
-  echo "" >> ~/.zshrc
-  echo "# Dotfiles" >> ~/.zshrc
   echo "export DOTFILES=\"$DOTFILES\"" >> ~/.zshrc
   echo "source \$DOTFILES/zsh/zshrc" >> ~/.zshrc
 fi

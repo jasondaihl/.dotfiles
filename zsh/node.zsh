@@ -1,12 +1,18 @@
-# nvm
+# Node / JS config
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# fnm
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-# Default node env
 export NODE_ENV=development
-
-# More memory for builds
 export NODE_OPTIONS="--max-old-space-size=4096"
+
+alias ni="npm install"
+alias nr="npm run"
+alias ns="npm start"
+alias nt="npm test"
+
+alias pi="pnpm install"
+alias pr="pnpm run"
+alias px="pnpm dlx"
+
+alias node-debug="node --inspect-brk"
