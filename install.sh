@@ -11,7 +11,6 @@ echo "🔗 Linking config files"
 mkdir -p ~/.config
 mkdir -p "$HOME/.vim"
 
-ln -sf "$DOTFILES/git/gitconfig" ~/.gitconfig
 ln -sf "$DOTFILES/starship/starship.toml" ~/.config/starship.toml
 ln -sf "$DOTFILES/vim/vimrc" "$HOME/.vimrc"
 

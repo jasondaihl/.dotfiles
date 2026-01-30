@@ -2,6 +2,10 @@
     name = Jason Daihl
     email = you@company.com
 
+[core]
+    editor = vim
+    autocrlf = input
+
 [push]
     default = simple
 

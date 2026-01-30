@@ -17,6 +17,25 @@ fi
 PROFILE_FILE="$DOTFILES/zsh/profiles/${DOTFILES_PROFILE}.zsh"
 [ -f "$PROFILE_FILE" ] && source "$PROFILE_FILE"
 
+switch_profile() {
+  case "$1" in
+    personal)
+      git config --global include.path ~/.dotfiles/git/gitconfig_personal
+      echo "Switched to personal profile"
+      git config user.email
+      ;;
+    work)
+      git config --global include.path ~/.dotfiles/git/gitconfig_work
+      echo "Switched to work profile"
+      git config user.email
+      ;;
+    *)
+      echo "Usage: switch_profile {personal|work}"
+      return 1
+      ;;
+  esac
+}
+
 # Starship
 STARSHIP_FILE="$DOTFILES/starship/starship_${DOTFILES_PROFILE}.toml"
 export STARSHIP_CONFIG="$STARSHIP_FILE"
@@ -35,4 +54,3 @@ source $DOTFILES/zsh/aliases.zsh
 source $DOTFILES/zsh/node.zsh
 source $DOTFILES/zsh/fzf.zsh
 source $DOTFILES/zsh/keybindings.zsh
-
