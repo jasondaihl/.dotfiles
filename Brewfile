@@ -1,0 +1,10 @@
+brew "starship"
+brew "fnm"
+brew "fzf"
+brew "bat"
+brew "eza"
+brew "zoxide"
+brew "git-delta"
+brew "jq"
+brew "direnv"
+

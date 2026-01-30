@@ -1,0 +1,30 @@
+# Core settings
+setopt AUTO_CD
+setopt NO_BEEP
+setopt HIST_IGNORE_ALL_DUPS
+setopt SHARE_HISTORY
+
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.zsh_history
+
+# Paths
+export PATH="/opt/homebrew/bin:$PATH"
+
+# Prompt
+eval "$(starship init zsh)"
+
+# Plugins
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Tooling
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+
+# Modular config
+source $DOTFILES/zsh/aliases.zsh
+source $DOTFILES/zsh/node.zsh
+source $DOTFILES/zsh/fzf.zsh
+source $DOTFILES/zsh/keybindings.zsh
+
