@@ -1,17 +1,25 @@
-# Core settings
-setopt AUTO_CD
-setopt NO_BEEP
-setopt HIST_IGNORE_ALL_DUPS
-setopt SHARE_HISTORY
+# ~/.dotfiles/zsh/zshrc
+export DOTFILES="$HOME/.dotfiles"
 
+# Core settings
+setopt AUTO_CD NO_BEEP HIST_IGNORE_ALL_DUPS SHARE_HISTORY
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.zsh_history
-
-# Paths
 export PATH="/opt/homebrew/bin:$PATH"
 
 # Prompt
+if [ -z "$DOTFILES_PROFILE" ]; then
+  export DOTFILES_PROFILE="personal"
+fi
+
+# Load profile-specific zsh configs
+PROFILE_FILE="$DOTFILES/zsh/profiles/${DOTFILES_PROFILE}.zsh"
+[ -f "$PROFILE_FILE" ] && source "$PROFILE_FILE"
+
+# Starship
+STARSHIP_FILE="$DOTFILES/starship/starship_${DOTFILES_PROFILE}.toml"
+export STARSHIP_CONFIG="$STARSHIP_FILE"
 eval "$(starship init zsh)"
 
 # Plugins

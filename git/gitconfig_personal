@@ -1,0 +1,22 @@
+[user]
+    name = Jason Daihl
+    email = jason@daihl.com
+
+[push]
+    default = simple
+
+[core]
+    pager = delta
+
+[delta]
+    navigate = true
+    side-by-side = false
+
+[interactive]
+    diffFilter = delta --color-only
+
+[branch]
+    sort = -committerdate
+
+[color]
+    ui = auto

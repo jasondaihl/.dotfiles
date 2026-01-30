@@ -1,0 +1,25 @@
+[user]
+    name = Jason Daihl
+    email = you@company.com
+
+[push]
+    default = simple
+
+[core]
+    pager = delta
+
+[delta]
+    navigate = true
+    side-by-side = false
+
+[interactive]
+    diffFilter = delta --color-only
+
+[branch]
+    sort = -committerdate
+
+[color]
+    ui = auto
+
+[core]
+    editor = code --wait        # maybe VS Code at work
