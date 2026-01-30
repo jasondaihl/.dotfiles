@@ -1,5 +1,6 @@
 brew "starship"
 brew "fnm"
+brew "pnpm"
 brew "fzf"
 brew "bat"
 brew "eza"
@@ -8,4 +9,4 @@ brew "git-delta"
 brew "jq"
 brew "direnv"
 brew "gh"
-
+brew "vim"

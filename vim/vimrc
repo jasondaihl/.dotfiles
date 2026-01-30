@@ -1,0 +1,83 @@
+" ----------------------------
+" Basic settings
+" ----------------------------
+set nocompatible          " Disable vi compatibility
+filetype plugin indent on
+syntax on                 " Enable syntax highlighting
+set number                " Show line numbers
+set relativenumber
+set cursorline            " Highlight current line
+set hidden                " Allow switching buffers without saving
+set clipboard=unnamedplus " Use system clipboard
+
+" ----------------------------
+" Indentation
+" ----------------------------
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+
+" ----------------------------
+" Search
+" ----------------------------
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" ----------------------------
+" UI tweaks
+" ----------------------------
+set showmatch             " Highlight matching brackets
+set ruler
+set laststatus=2
+set showcmd
+set wildmenu              " Enhanced command completion
+set lazyredraw            " Faster scrolling
+set scrolloff=5
+
+" ----------------------------
+" Shortcuts
+" ----------------------------
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>x :x<CR>
+nnoremap <leader>h :nohlsearch<CR> " Clear highlights
+
+" ----------------------------
+" JS/TS specific
+" ----------------------------
+augroup js_ts
+  autocmd!
+  autocmd FileType javascript,typescript,typescriptreact setlocal tabstop=2 shiftwidth=2 expandtab
+augroup END
+
+" ----------------------------
+" Plugins (lightweight)
+" ----------------------------
+" Use vim-plug if you want minimal plugin management
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" Optional useful plugins
+Plug 'preservim/nerdtree'        " File tree
+Plug 'tpope/vim-commentary'      " Comment toggling
+Plug 'jiangmiao/auto-pairs'      " Auto-pairs for brackets
+Plug 'pangloss/vim-javascript'   " JS syntax improvements
+Plug 'leafgarland/typescript-vim' " TS syntax
+Plug 'sheerun/vim-polyglot'      " Many languages syntax support
+Plug 'dense-analysis/ale'        " Linting & format checks
+Plug 'morhetz/gruvbox'           " Optional theme
+
+call plug#end()
+
+" Set theme
+colorscheme gruvbox
+set background=dark
