@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 alias ls="eza --icons"
 alias ll="eza -l --icons"
 alias cat="bat"

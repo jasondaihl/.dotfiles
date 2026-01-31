@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1090
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # npm script runner

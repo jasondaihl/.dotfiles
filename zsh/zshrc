@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # ~/.dotfiles/zsh/zshrc
 export DOTFILES="$HOME/.dotfiles"
 

@@ -22,4 +22,3 @@ if ! grep -q ".dotfiles/zsh/zshrc" ~/.zshrc 2>/dev/null; then
 fi
 
 echo "✅ Done. Restart your terminal."
-
