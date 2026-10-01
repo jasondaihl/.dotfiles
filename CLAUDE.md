@@ -6,7 +6,8 @@ Personal dotfiles for a fast, Node-focused zsh environment on macOS (Homebrew). 
 
 ## Commands
 
-- `./install.sh` — bootstrap: `brew bundle`, symlink configs, run `vim +PlugInstall`, and append the zshrc source line to `~/.zshrc`. Idempotent (guards against duplicate source lines).
+- `./install.sh` — full new-Mac bootstrap: installs Xcode CLT + Homebrew if missing, `brew bundle`, symlinks configs, installs VS Code extensions, installs Node LTS via fnm + corepack, runs `vim +PlugInstall`, applies `macos/defaults.sh`, and appends the zshrc source line to `~/.zshrc`. Idempotent.
+- `macos/defaults.sh` — opinionated macOS system prefs (`defaults write`). Safe to run standalone and re-run.
 - `pre-commit run --all-files` — run the linters (shellcheck, editorconfig-checker, YAML/JSON/TOML checks, whitespace fixers). This is the only "test"/CI gate. Config in `.pre-commit-config.yaml`.
 - `reload` (alias) — re-source `~/.zshrc` after editing shell configs.
 - `bin/dev-reset` — nukes `node_modules` + lockfiles and reinstalls (per-project helper, not dotfiles-related).
@@ -15,17 +16,16 @@ Shellcheck runs with `--shell=bash`, but the shell scripts are zsh; keep zsh-ism
 
 ## Architecture
 
-`zsh/zshrc` is the single entrypoint. `install.sh` does NOT symlink it — it appends `export DOTFILES` + `source $DOTFILES/zsh/zshrc` to the user's real `~/.zshrc`. `zshrc` then sources the modular files in `zsh/` (`aliases`, `node`, `fzf`, `keybindings`). Only `starship/starship.toml` and `vim/vimrc` are symlinked into place.
+`zsh/zshrc` is the single entrypoint. `install.sh` does NOT symlink it — it appends `export DOTFILES` + `source $DOTFILES/zsh/zshrc` to the user's real `~/.zshrc`. `zshrc` then sources the modular files in `zsh/` (`aliases`, `node`, `fzf`, `keybindings`). Symlinked into place by `install.sh`: `starship/starship.toml` → `~/.config/starship.toml`, `vim/vimrc` → `~/.vimrc`, `vscode/settings.json` → the VS Code User dir.
 
-### Profile system (the non-obvious part)
+### Profile system
 
-Two independent mechanisms both keyed on "personal" vs "work":
+One function unifies both profile concerns. `switch_profile {personal|work}` (with `personal`/`work` aliases in `aliases.zsh`) does three things: writes the choice to `$DOTFILES/.current_profile` (gitignored), flips `git config --global include.path` between `git/gitconfig_personal` and `git/gitconfig_work`, and `exec zsh` to reload. On startup `zshrc` reads `.current_profile` (env override wins, fallback `personal`) into `DOTFILES_PROFILE`, then sources `zsh/profiles/${DOTFILES_PROFILE}.zsh`. So git identity and shell env now switch together and persist across shells.
 
-1. **Shell env profile** — `DOTFILES_PROFILE` (defaults to `personal`) selects which file `zsh/profiles/${DOTFILES_PROFILE}.zsh` gets sourced and which `starship/starship_${DOTFILES_PROFILE}.toml` is used as `STARSHIP_CONFIG`. Set `DOTFILES_PROFILE` before the shell loads to switch.
-2. **Git identity profile** — the `switch_profile` function (and the `personal`/`work` aliases) swap `git config --global include.path` between `git/gitconfig_personal` and `git/gitconfig_work`. This is runtime and separate from `DOTFILES_PROFILE`.
+Git configs are layered: `gitconfig_personal`/`gitconfig_work` hold only `[user]` identity and `[include]` the shared `git/gitconfig_common` (editor, delta, push, branch, color). Edit shared settings in `gitconfig_common`.
 
-Both profile files must be named `profiles/<name>.zsh` — `zshrc` only sources `profiles/${DOTFILES_PROFILE}.zsh`, so a differently-suffixed file (e.g. `.sh`) silently won't load.
+Starship uses a single config (`starship/starship.toml`); there is no per-profile prompt (starship has no config include mechanism).
 
 ### Tooling assumptions
 
-Everything in `Brewfile` must be installed or `zshrc` errors on startup: `fnm` (Node version mgmt, `--use-on-cd`), `starship`, `zoxide`, `direnv`, `git-delta`, plus the zsh plugins `zsh-autosuggestions` and `zsh-syntax-highlighting` (sourced from `$(brew --prefix)/share/...`). Aliases also assume `eza`, `bat`. Node defaults live in `zsh/node.zsh` (`NODE_ENV`, `NODE_OPTIONS` heap size, npm/pnpm aliases).
+Everything in `Brewfile` must be installed or `zshrc` errors on startup: `fnm` (Node version mgmt, `--use-on-cd`), `starship`, `zoxide`, `direnv`, `git-delta`, plus the zsh plugins `zsh-autosuggestions` and `zsh-syntax-highlighting` (sourced from `$(brew --prefix)/share/...`). Aliases assume `eza`, `bat`. The `--icons`/prompt glyphs require the JetBrains Mono Nerd Font (installed via Brewfile cask). `NODE_ENV` is intentionally NOT exported globally — it belongs in per-project `.envrc` (direnv); `zsh/node.zsh` only sets `NODE_OPTIONS` + npm/pnpm aliases.

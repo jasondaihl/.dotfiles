@@ -1,0 +1,21 @@
+# Shared git settings, included by gitconfig_personal and gitconfig_work.
+[core]
+    editor = code --wait
+    autocrlf = input
+    pager = delta
+
+[push]
+    default = simple
+
+[delta]
+    navigate = true
+    side-by-side = false
+
+[interactive]
+    diffFilter = delta --color-only
+
+[branch]
+    sort = -committerdate
+
+[color]
+    ui = auto

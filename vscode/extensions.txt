@@ -1,0 +1,7 @@
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint
+editorconfig.editorconfig
+eamodio.gitlens
+mikestead.dotenv
+bradlc.vscode-tailwindcss
+vscode-icons-team.vscode-icons

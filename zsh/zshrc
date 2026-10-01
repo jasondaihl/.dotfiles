@@ -9,26 +9,27 @@ SAVEHIST=10000
 HISTFILE=~/.zsh_history
 export PATH="/opt/homebrew/bin:$PATH"
 
-# Prompt
-if [ -z "$DOTFILES_PROFILE" ]; then
-  export DOTFILES_PROFILE="personal"
+# Profile: resolve from the persisted file (written by switch_profile),
+# falling back to any env override, then "personal".
+PROFILE_STATE="$DOTFILES/.current_profile"
+if [ -z "$DOTFILES_PROFILE" ] && [ -f "$PROFILE_STATE" ]; then
+  DOTFILES_PROFILE="$(cat "$PROFILE_STATE")"
 fi
+export DOTFILES_PROFILE="${DOTFILES_PROFILE:-personal}"
 
 # Load profile-specific zsh configs
 PROFILE_FILE="$DOTFILES/zsh/profiles/${DOTFILES_PROFILE}.zsh"
 [ -f "$PROFILE_FILE" ] && source "$PROFILE_FILE"
 
+# Persist the choice, flip the git identity, and reload the shell so the new
+# profile (env + prompt) takes effect everywhere.
 switch_profile() {
   case "$1" in
-    personal)
-      git config --global include.path ~/.dotfiles/git/gitconfig_personal
-      echo "Switched to personal profile"
-      git config user.email
-      ;;
-    work)
-      git config --global include.path ~/.dotfiles/git/gitconfig_work
-      echo "Switched to work profile"
-      git config user.email
+    personal|work)
+      echo "$1" > "$PROFILE_STATE"
+      git config --global include.path "$DOTFILES/git/gitconfig_$1"
+      echo "Switched to $1 profile ($(git config user.email))"
+      exec zsh
       ;;
     *)
       echo "Usage: switch_profile {personal|work}"
@@ -37,9 +38,7 @@ switch_profile() {
   esac
 }
 
-# Starship
-STARSHIP_FILE="$DOTFILES/starship/starship_${DOTFILES_PROFILE}.toml"
-export STARSHIP_CONFIG="$STARSHIP_FILE"
+# Starship (single shared config, symlinked to ~/.config/starship.toml)
 eval "$(starship init zsh)"
 
 # Plugins

@@ -10,6 +10,6 @@ alias gs="git status"
 alias gd="git diff"
 alias gl="git log --oneline --graph --decorate"
 
-# Profile switching
-alias personal="git config --global include.path ~/.dotfiles/git/gitconfig_personal && echo 'Switched to personal profile' && git config user.email"
-alias work="git config --global include.path ~/.dotfiles/git/gitconfig_work && echo 'Switched to work profile' && git config user.email"
+# Profile switching (switch_profile is defined in zshrc)
+alias personal="switch_profile personal"
+alias work="switch_profile work"

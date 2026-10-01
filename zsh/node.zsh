@@ -5,7 +5,7 @@
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-export NODE_ENV=development
+# NODE_ENV is intentionally not set globally — set it per-project via direnv (.envrc).
 export NODE_OPTIONS="--max-old-space-size=4096"
 
 alias ni="npm install"

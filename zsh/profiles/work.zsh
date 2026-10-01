@@ -1,6 +1,3 @@
-# Work-specific env
-export NODE_ENV=staging
+# Work profile env.
+# Set NODE_ENV per-project via direnv (.envrc), not here.
 export WORK_VAR="work-secret"
-
-# Prompt tweaks
-export STARSHIP_PROMPT_ORDER="directory,git_branch,git_status,nodejs,character"
