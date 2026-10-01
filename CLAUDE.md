@@ -7,6 +7,7 @@ Personal dotfiles for a fast, Node-focused zsh environment on macOS (Homebrew). 
 ## Commands
 
 - `./install.sh` — full new-Mac bootstrap: installs Xcode CLT + Homebrew if missing, `brew bundle`, symlinks configs, installs VS Code extensions, installs Node LTS via fnm + corepack, runs `vim +PlugInstall`, applies `macos/defaults.sh`, and appends the zshrc source line to `~/.zshrc`. Idempotent.
+- `./install.sh --dry-run` — sandbox test: runs only the filesystem steps (symlinks + `~/.zshrc` hook) against a throwaway `$HOME`, skipping brew/Xcode/extensions/Node/macOS-defaults. Use this to validate install logic without mutating the machine. (`macos/defaults.sh` is skipped in dry-run because `defaults write` ignores `$HOME`.)
 - `macos/defaults.sh` — opinionated macOS system prefs (`defaults write`). Safe to run standalone and re-run.
 - `pre-commit run --all-files` — run the linters (shellcheck, editorconfig-checker, YAML/JSON/TOML checks, whitespace fixers). This is the only "test"/CI gate. Config in `.pre-commit-config.yaml`.
 - `reload` (alias) — re-source `~/.zshrc` after editing shell configs.

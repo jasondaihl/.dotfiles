@@ -73,6 +73,42 @@ Keeping things current — the tasks that are easy to forget:
 | Change a git setting shared by both profiles | Edit `git/gitconfig_common` (not the per-profile files) |
 | Lint everything before committing | `pre-commit run --all-files` |
 
+## Testing changes
+
+You don't need to wipe your primary account to try changes. Two options, fastest first:
+
+**Dry run (quick inner loop).** Sandboxes `$HOME` to a throwaway temp dir and runs only
+the filesystem steps (config symlinks + the `~/.zshrc` hook), skipping everything
+global/system-level:
+
+```sh
+./install.sh --dry-run
+```
+
+It prints the sandbox path so you can inspect it (`cat <sandbox>/.zshrc`, check the
+symlinks) and `rm -rf` it afterward. Nothing outside the sandbox is touched. Note what
+this **does not** exercise: `brew bundle`, VS Code extension installs, Node setup, and
+`macos/defaults.sh` — the last is skipped on purpose because `defaults write` ignores
+`$HOME` and writes to the logged-in user's real preferences.
+
+**Second macOS user account (full end-to-end).** The easiest way to test the *whole*
+run — including `brew bundle` and the macOS defaults — without risking your account:
+
+1. System Settings → Users & Groups → add a **Standard** user (e.g. `dotfilestest`).
+2. Log into it, then:
+   ```sh
+   git clone https://github.com/jasondaihl/.dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles && ./install.sh
+   ```
+3. Verify the shell, prompt, profile switching (`work` / `personal`), and app installs.
+4. Log out and delete the user when done.
+
+Why it's well-isolated: dotfiles, `~/.zshrc`, and VS Code settings live in that user's
+home, and `defaults write` domains (Dock, Finder, key repeat, …) are per-user. Homebrew
+is shared system-wide, so formulae/casks you install there will also appear for your main
+account — that's the one non-isolated part. For a *completely* pristine machine (to test
+the fresh-Homebrew / Xcode-CLT install paths), use a macOS VM instead.
+
 ## Why these choices
 
 - **fnm over nvm** — much faster shell startup; `--use-on-cd` auto-switches Node per directory.
