@@ -57,3 +57,26 @@ between `git/gitconfig_personal` and `git/gitconfig_work` (both include shared
 `macos/defaults.sh` applies dev-friendly system preferences (fast key repeat, show file
 extensions/hidden files, Dock + Finder tweaks, screenshots to `~/Screenshots`). It's run by
 `install.sh` but is safe to run standalone and re-run. Some settings need a logout/restart.
+
+## Maintenance
+
+Keeping things current — the tasks that are easy to forget:
+
+| Task | How |
+| --- | --- |
+| Add/remove a CLI tool or app | Edit `Brewfile`, then `brew bundle` |
+| Capture ad-hoc installs into the Brewfile | `brew bundle dump --force --file=Brewfile` |
+| See what's installed but *not* in the Brewfile (drift) | `brew bundle cleanup --file=Brewfile` (add `--force` to actually uninstall) |
+| Add a VS Code extension | `code --list-extensions` to snapshot, add the id to `vscode/extensions.txt` |
+| Bump pinned pre-commit hooks | `pre-commit autoupdate` |
+| Re-apply macOS tweaks (e.g. after an OS upgrade) | `./macos/defaults.sh` |
+| Change a git setting shared by both profiles | Edit `git/gitconfig_common` (not the per-profile files) |
+| Lint everything before committing | `pre-commit run --all-files` |
+
+## Why these choices
+
+- **fnm over nvm** — much faster shell startup; `--use-on-cd` auto-switches Node per directory.
+- **No oh-my-zsh** — avoids its startup cost; plugins are sourced directly in `zsh/zshrc`.
+- **OrbStack over Docker Desktop** — lighter, faster, lower battery/memory use.
+- **Single starship config** — starship has no include mechanism, so per-profile prompts
+  aren't worth the duplication; profiles differ via git identity + shell env instead.
